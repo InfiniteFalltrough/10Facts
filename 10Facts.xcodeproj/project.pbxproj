@@ -11,6 +11,8 @@
 		0660622D2A607BD9000DDB44 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0660622C2A607BD9000DDB44 /* ContentView.swift */; };
 		0660622F2A607BDA000DDB44 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0660622E2A607BDA000DDB44 /* Assets.xcassets */; };
 		066062322A607BDA000DDB44 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 066062312A607BDA000DDB44 /* Preview Assets.xcassets */; };
+		0660623A2A61B3E0000DDB44 /* OpenAIKit in Frameworks */ = {isa = PBXBuildFile; productRef = 066062392A61B3E0000DDB44 /* OpenAIKit */; };
+		0660623C2A61B427000DDB44 /* config.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0660623B2A61B427000DDB44 /* config.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -19,6 +21,7 @@
 		0660622C2A607BD9000DDB44 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		0660622E2A607BDA000DDB44 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		066062312A607BDA000DDB44 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		0660623B2A61B427000DDB44 /* config.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = config.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -26,6 +29,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0660623A2A61B3E0000DDB44 /* OpenAIKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -53,6 +57,7 @@
 			children = (
 				0660622A2A607BD9000DDB44 /* _0FactsApp.swift */,
 				0660622C2A607BD9000DDB44 /* ContentView.swift */,
+				0660623B2A61B427000DDB44 /* config.swift */,
 				0660622E2A607BDA000DDB44 /* Assets.xcassets */,
 				066062302A607BDA000DDB44 /* Preview Content */,
 			);
@@ -83,6 +88,9 @@
 			dependencies = (
 			);
 			name = 10Facts;
+			packageProductDependencies = (
+				066062392A61B3E0000DDB44 /* OpenAIKit */,
+			);
 			productName = 10Facts;
 			productReference = 066062272A607BD9000DDB44 /* 10Facts.app */;
 			productType = "com.apple.product-type.application";
@@ -111,6 +119,9 @@
 				Base,
 			);
 			mainGroup = 0660621E2A607BD9000DDB44;
+			packageReferences = (
+				066062382A61B3E0000DDB44 /* XCRemoteSwiftPackageReference "OpenAI" */,
+			);
 			productRefGroup = 066062282A607BD9000DDB44 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -137,6 +148,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0660623C2A61B427000DDB44 /* config.swift in Sources */,
 				0660622D2A607BD9000DDB44 /* ContentView.swift in Sources */,
 				0660622B2A607BD9000DDB44 /* _0FactsApp.swift in Sources */,
 			);
@@ -349,6 +361,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		066062382A61B3E0000DDB44 /* XCRemoteSwiftPackageReference "OpenAI" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/FuturraGroup/OpenAI";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		066062392A61B3E0000DDB44 /* OpenAIKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 066062382A61B3E0000DDB44 /* XCRemoteSwiftPackageReference "OpenAI" */;
+			productName = OpenAIKit;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 0660621F2A607BD9000DDB44 /* Project object */;
 }
