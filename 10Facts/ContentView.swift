@@ -10,39 +10,59 @@ import OpenAIKit
 
 struct ContentView: View {
     
-    @State private var result = ""
-    
-    var star: Star = Star.BlackHole
+    @State private var imgUrl = ""
+    @State private var facts = ""
+    let openAI = OpenAIKit(apiToken: openAI_token)
     
     var body: some View {
-        ScrollView(.vertical) {
-            Circle()
-                .fill(
-                    RadialGradient(gradient: Gradient(colors: [.red, .yellow]), center: .center, startRadius: 45, endRadius: 90)
-                )
-                .frame(width: 180, height: 180)
-            
-            Text(result).animation(Animation.easeInOut(duration: 1.5))
-                .padding(.all)
-                .foregroundColor(.white)
-            
+        VStack {
+            ScrollView(.vertical) {
+                AsyncImage(url: URL(string: imgUrl))
+                    .frame(width: width, height: height / 2.25)
+                Text(facts).animation(Animation.easeInOut(duration: 1))
+                    .padding(EdgeInsets(top: 5, leading: 20, bottom: 20, trailing: 20))
+                    .foregroundColor(.white)
+                Spacer()
+            }
+            .onAppear {
+                requestAI(star: Star.Moon)
+            }
         }.frame(width: width)
-        .background(
-            LinearGradient(gradient: Gradient(colors: [.blue, .black.opacity(0.95), .black]), startPoint: .top, endPoint: .bottom)
-        )
-
-        .onAppear {
-            Task {
-                let openAI = OpenAIKit(apiToken: openAI_token)
-                let res = await openAI.sendCompletion(prompt: "tell me 10 random facts about \(star.rawValue)", model: .gptV3_5(.davinciText003), maxTokens: 2048)
-                switch res {
-                case .success(let aiResult):
-                    if let text = aiResult.choices.first?.text {
-                        result = text
+            .background(
+                LinearGradient(gradient: Gradient(colors: [.black.opacity(0.95), .black.opacity(0.90), .black.opacity(0.95)]), startPoint: .top, endPoint: .bottom)
+            )
+    }
+    
+    func requestAI(star: Star) {
+        Task {
+            await sendRequest(star: star)
+            await requestImage(star: star)
+        }
+    }
+    
+    private func sendRequest(star: Star) async {
+        let res = await openAI.sendCompletion(prompt: "tell me 10 random facts about \(star.rawValue)", model: .gptV3_5(.davinciText003), maxTokens: 2048)
+        switch res {
+        case .success(let aiResult):
+            if let text = aiResult.choices.first?.text {
+                facts = text
+            }
+        case .failure(let error):
+            print(error.localizedDescription)
+        }
+    }
+    
+    private func requestImage(star: Star) async {
+        openAI.sendImagesRequest(prompt: "space, image of the \(star)", size: .size512, n: 1) { res in
+            switch res {
+            case .success(let aiResult):
+                DispatchQueue.main.async {
+                    if let urlString = aiResult.data.first?.url {
+                        imgUrl = urlString
                     }
-                case .failure(let error):
-                    print(error.localizedDescription)
                 }
+            case .failure(let error):
+                print(error.localizedDescription)
             }
         }
     }
