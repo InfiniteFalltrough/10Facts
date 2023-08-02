@@ -12,20 +12,21 @@ struct ContentView: View {
     
     @State private var imgUrl = ""
     @State private var facts = ""
-    let openAI = OpenAIKit(apiToken: openAI_token)
+    
+    @ObservedObject var manager: Manager = Manager()
     
     var body: some View {
         VStack {
             ScrollView(.vertical) {
-                AsyncImage(url: URL(string: imgUrl))
+                AsyncImage(url: URL(string: manager.result.first?.imageURL ?? ""))
                     .frame(width: width, height: height / 2.25)
-                Text(facts).animation(Animation.easeInOut(duration: 1))
+                Text(manager.result.first?.facts ?? "").animation(Animation.easeInOut(duration: 1))
                     .padding(EdgeInsets(top: 5, leading: 20, bottom: 20, trailing: 20))
                     .foregroundColor(.white)
                 Spacer()
             }
             .onAppear {
-                requestAI(star: Star.Moon)
+                manager.requestData()
             }
         }.frame(width: width)
             .background(
@@ -33,37 +34,4 @@ struct ContentView: View {
             )
     }
     
-    func requestAI(star: Star) {
-        Task {
-            await sendRequest(star: star)
-            await requestImage(star: star)
-        }
-    }
-    
-    private func sendRequest(star: Star) async {
-        let res = await openAI.sendCompletion(prompt: "tell me 10 random facts about \(star.rawValue)", model: .gptV3_5(.davinciText003), maxTokens: 2048)
-        switch res {
-        case .success(let aiResult):
-            if let text = aiResult.choices.first?.text {
-                facts = text
-            }
-        case .failure(let error):
-            print(error.localizedDescription)
-        }
-    }
-    
-    private func requestImage(star: Star) async {
-        openAI.sendImagesRequest(prompt: "space, image of the \(star)", size: .size512, n: 1) { res in
-            switch res {
-            case .success(let aiResult):
-                DispatchQueue.main.async {
-                    if let urlString = aiResult.data.first?.url {
-                        imgUrl = urlString
-                    }
-                }
-            case .failure(let error):
-                print(error.localizedDescription)
-            }
-        }
-    }
 }
