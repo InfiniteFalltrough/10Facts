@@ -9,9 +9,15 @@ import SwiftUI
 
 @main
 struct _0FactsApp: App {
+    
+    @StateObject var manager: Manager = Manager()
+    
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            ContentView(manager: manager)
+                .onAppear {
+                    manager.requestData()
+                }
         }
     }
 }

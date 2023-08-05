@@ -13,25 +13,30 @@ struct ContentView: View {
     @State private var imgUrl = ""
     @State private var facts = ""
     
-    @ObservedObject var manager: Manager = Manager()
+    @State private var selectedImageIndex: Int = 0
+    
+    @ObservedObject var manager: Manager
     
     var body: some View {
-        VStack {
-            ScrollView(.vertical) {
-                AsyncImage(url: URL(string: manager.result.first?.imageURL ?? ""))
-                    .frame(width: width, height: height / 2.25)
-                Text(manager.result.first?.facts ?? "").animation(Animation.easeInOut(duration: 1))
-                    .padding(EdgeInsets(top: 5, leading: 20, bottom: 20, trailing: 20))
-                    .foregroundColor(.white)
-                Spacer()
+        TabView {
+            ForEach(manager.result, id: \.self) { s in
+                ScrollView(.vertical) {
+                    AsyncImage(url: URL(string: s.imageURL  ?? ""))
+                        .frame(width: width, height: height / 2.25)
+                    Text(s.title).foregroundColor(.white)
+                    Text(s.facts).animation(Animation.easeInOut(duration: 1))
+                        .padding(EdgeInsets(top: 0, leading: 20, bottom: 20, trailing: 20))
+                        .foregroundColor(.white)
+                    Spacer()
+                }
             }
-            .onAppear {
-                manager.requestData()
-            }
-        }.frame(width: width)
-            .background(
-                LinearGradient(gradient: Gradient(colors: [.black.opacity(0.95), .black.opacity(0.90), .black.opacity(0.95)]), startPoint: .top, endPoint: .bottom)
-            )
+        }
+        .tabViewStyle(.page).indexViewStyle(.page(backgroundDisplayMode: .always))
+        .background(backgroud())
+    }
+    
+    func backgroud() -> some View {
+        LinearGradient(gradient: Gradient(colors: [.black.opacity(0.95), .black.opacity(0.90), .black.opacity(0.95)]), startPoint: .top, endPoint: .bottom).edgesIgnoringSafeArea(.all)
     }
     
 }

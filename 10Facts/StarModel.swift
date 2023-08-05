@@ -7,8 +7,9 @@
 
 import Foundation
 
-struct StarModel: Codable {
-    let title: String?
-    let facts: String?
+struct StarModel: Hashable {
+    let id = UUID()
+    let title: String
+    let facts: String
     var imageURL: String? = ""
 }
