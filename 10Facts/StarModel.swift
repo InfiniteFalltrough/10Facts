@@ -8,8 +8,8 @@
 import Foundation
 
 struct StarModel: Hashable {
-    let id = UUID()
+    let id: UUID = UUID()
     let title: String
     let facts: String
-    var imageURL: String? = ""
+    let imageURL: String
 }
