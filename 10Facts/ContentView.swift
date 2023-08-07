@@ -21,10 +21,11 @@ struct ContentView: View {
         TabView {
             ForEach(manager.result, id: \.self) { s in
                 ScrollView(.vertical) {
-                    AsyncImage(url: URL(string: s.imageURL  ?? ""))
+                    AsyncImage(url: URL(string: s.imageURL))
                         .frame(width: width, height: height / 2.25)
+                        .cornerRadius(12)
                     Text(s.title).foregroundColor(.white)
-                    Text(s.facts).animation(Animation.easeInOut(duration: 1))
+                    Text(s.facts).animation(Animation.easeInOut(duration: 0.5))
                         .padding(EdgeInsets(top: 0, leading: 20, bottom: 20, trailing: 20))
                         .foregroundColor(.white)
                     Spacer()

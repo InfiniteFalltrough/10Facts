@@ -15,8 +15,8 @@ struct _0FactsApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView(manager: manager)
-                .onAppear {
-                    manager.requestData()
+                .alert(item: $manager.errorMessage) { error in
+                    Alert(title: Text(error.title), message: Text(error.message))
                 }
         }
     }
